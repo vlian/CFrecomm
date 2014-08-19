@@ -6,6 +6,7 @@ import math
 
 class UserBasedCF:
     def __init__(self, userdet=None, outcfcomm=None):
+        self.bestusersim = dict()
         self.userdet = userdet
         self.outcfcomm = outcfcomm
         self.userDict = {}
@@ -13,9 +14,9 @@ class UserBasedCF:
         self.user_item_matrix = dict()
 
     def UserItemDic(self, userdet=None, outcfcomm=None):
-        '''
+        """
         读用户
-        '''
+        """
         self.userdet = userdet or self.userdet
         self.outcfcomm = outcfcomm or self.outcfcomm
         f = open(self.userdet, 'r')
@@ -50,9 +51,9 @@ class UserBasedCF:
 
     def similarity(self):
 
-        '''
+        """
         计算用户相似度的一种简单方法。
-        '''
+        """
         self.userSim = dict()
         for u in user_item_matrix.keys():
             for v in user_item_matrix.keys():
@@ -64,10 +65,8 @@ class UserBasedCF:
     '''
     物品到用户的反查表。
     '''
-
     def bestsim(self, usermatr=None):
         usermatr = usermatr or self.user_item_matrix
-        self.bestusersim = dict()
         item_users = dict()  #item对应所有user的字典。
         for i, item in usermatr.items():
             '''
@@ -92,30 +91,48 @@ class UserBasedCF:
         for u, related_users in count.items():
             self.bestusersim.setdefault(u, dict())
             for v, cuv in related_users.items():
-                self.bestusersim[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)
+                """
+                cuv:related_users[][]:用户相同节目的个数。
+                """
+                self.bestusersim[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)#用户相似度。
+        return self.bestusersim
 
-        def recommend(self, user, usermatr=None, k=8, nitem=40):
-            usermatr = usermatr or self.user_item_matrix
-            rank = dict()
-            interacted_items = usermatr.get(user, {})
-            for v, wuv in sorted(self.bestusersim[user].items(), key=lambda x:x[1], reverse=True)[0:k]:
-                for i, rvi in train[v].items():
-                    if i in interacted_items:
-                        continue
-                    rank.setdefault(i, 0)
-                    rank[i] += wuv
-            return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:nitem])
+    def recommend(self, user, usermatr=None, k=8, nitem=40):
+        """
+        推荐。
+        """
+        usermatr = usermatr or self.user_item_matrix
+        rank = dict()
+        interacted_items = usermatr.get(user, {})#输入用户的订购矩阵。
+        for v, wuv in sorted(self.bestusersim[user].items(), key=lambda x:x[1], reverse=True)[0:k]:
+            """
+            v:最近邻用户；wuv:最近邻用户的相似度。
+            """
+            for i, rvi in usermatr[v].items():
+                '''
+                i:最近邻用户v订购的节目。rvi:最近邻用户订购节目的打分（1）。
+                '''
+                if i in interacted_items:
+                    continue
+                rank.setdefault(i, 0)
+                rank[i] += wuv
+                '''
+                rank：对于一个用户的某个节目，累加相似度。
+                '''
+        return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:nitem])
+        """
+        返回节目累加的相似度排名。
+        """
 
 u = UserBasedCF('userdet_20140713.dat', 'cf_comm.txt')
 #print u.ReadUserDet().keys()
 useritem_dic = u.UserItemDic()
-
+"""
 for a in useritem_dic:
     if useritem_dic[a].values().count(1) > 0:
         pass
         #print a.ljust(50, '.'), useritem_dic[a], '*******************\n'
-
-wr = open(self.outcfcomm, 'w')
-x = u.bestsim()
-wr.write(x)
-wr.close()
+"""
+for usr in u.bestusersim.keys():
+    print usr
+    c= u.recommend(usr)
