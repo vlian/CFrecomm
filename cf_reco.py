@@ -19,7 +19,6 @@ class UserBasedCF:
         self.userdet = userdet or self.userdet
         self.outcfcomm = outcfcomm or self.outcfcomm
         f = open(self.userdet, 'r')
-        wr = open(self.outcfcomm, 'w')
         for var in f:
             arr = var.split('|')
             itemF = arr[6]
@@ -37,7 +36,6 @@ class UserBasedCF:
                     self.userDict[userF] = 1
                     self.user_item_matrix.setdefault(userF, {})
                     self.user_item_matrix[userF][itemF] = 1
-        wr.close()
         f.close()
         #补齐矩阵
         ('\n'
@@ -90,23 +88,23 @@ class UserBasedCF:
                         continue
                     count.setdefault(u, {})
                     count[u].setdefault(v, 0)
-                    count[u][v] += 1  #与用户2的相同个数。
+                    count[u][v] += 1  #用户订购关系矩阵。
         for u, related_users in count.items():
             self.bestusersim.setdefault(u, dict())
             for v, cuv in related_users.items():
                 self.bestusersim[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)
-    def recommend(self, user, train=None, k=8, nitem=40):
-            train = train or self.traindata
+
+        def recommend(self, user, usermatr=None, k=8, nitem=40):
+            usermatr = usermatr or self.user_item_matrix
             rank = dict()
-            interacted_items = train.get(user, {})
-            for v, wuv in sorted(self.userSimBest[user].items(), key=lambda x: x[1], reverse=True)[0:k]:
+            interacted_items = usermatr.get(user, {})
+            for v, wuv in sorted(self.bestusersim[user].items(), key=lambda x:x[1], reverse=True)[0:k]:
                 for i, rvi in train[v].items():
                     if i in interacted_items:
                         continue
                     rank.setdefault(i, 0)
                     rank[i] += wuv
             return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:nitem])
-
 
 u = UserBasedCF('userdet_20140713.dat', 'cf_comm.txt')
 #print u.ReadUserDet().keys()
@@ -117,3 +115,7 @@ for a in useritem_dic:
         pass
         #print a.ljust(50, '.'), useritem_dic[a], '*******************\n'
 
+wr = open(self.outcfcomm, 'w')
+x = u.bestsim()
+wr.write(x)
+wr.close()
