@@ -97,7 +97,7 @@ class UserBasedCF:
                 self.bestusersim[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)#用户相似度。
         return self.bestusersim
 
-    def recommend(self, user, usermatr=None, k=8, nitem=40):
+    def recommend(self, user, usermatr=None, k=4, nitem=4):
         """
         推荐。
         """
