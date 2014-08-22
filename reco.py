@@ -1,8 +1,11 @@
 # -*- coding:utf-8 -*-
 
-"""recommend according to customers' subscription"""
+"""
+recommend according to customers' subscription
+2014-8-23
+"""
 
-__author__ = 'Yuan, Wang'
+__author__ = '(Yuan Lu-Feng)yuanlufeng@xwtech.com, (Wang Xing)wangxing@xwtech.com'
 
 import math
 
@@ -85,14 +88,14 @@ class Recommend:
                             userRelated[u][v] = 1
 
         """
-        similarity matrix
+        similarity matrix,only related-users involved.
         """
         for u, related in userRelated.items():
             for v, count in related.items():
                 self.userSim[u][v] = count / math.sqrt(len(self.uimatrix[u]) * len(self.uimatrix[v]))
 
         """
-        add scores
+        sum scores
         """
     def recommend(self, user, k=4, nitem=4):
         rank = dict()

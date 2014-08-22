@@ -1,12 +1,15 @@
 # -*- coding:utf-8 -*-
-__author__ = 'Yuan, Wang'
+"""
+recommend according to customers' subscription
+2014-8-23
+----------------------------------------------
+readdata:input file.
+commend_result:output file.
+"""
+
+__author__ = '(Yuan Lu-Feng)yuanlufeng@xwtech.com, (Wang Xing)wangxing@xwtech.com'
 import reco
 from reco import Recommend
-"""
-readdata:读取数据。
-commend_result:输出结果文件。
-只计算有相同点播历史的用户
-"""
 
 
 def readdata(filename):
