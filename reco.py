@@ -3,6 +3,8 @@
 """
 recommend according to customers' subscription
 2014-8-23
+///////////////////////////////////////////////
+input:
 """
 
 __author__ = '(Yuan Lu-Feng)yuanlufeng@xwtech.com, (Wang Xing)wangxing@xwtech.com'
@@ -29,12 +31,14 @@ class Recommend:
         """
     def setuser(self):
         self.users = set(r[0] for r in self.records)
+        #print len(self.users),'**\n'
 
         """
         item_set
         """
     def setitem(self):
         self.items = set(r[1] for r in self.records)
+        #print len(self.items),'**\n'
 
         """
         user-item-ordered matrix
@@ -42,6 +46,7 @@ class Recommend:
     def setuimatrix(self):
         for u in self.users:
             self.uimatrix[u] = {}
+
         for u, i in self.records:
             try:
                 self.uimatrix[u][i] += 1
