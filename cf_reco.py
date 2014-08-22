@@ -127,20 +127,25 @@ class UserBasedCF:
 u = UserBasedCF('userdet_20140713.dat', 'cf_comm.txt')
 #print u.ReadUserDet().keys()
 #useritem_dic = u.UserItemDic()
+
+
+for usr in u.count.keys():
+    #print usr
+    c = u.recommend(usr)
+    if len(c) != 0:
+        print c, '**\n'
+
+
+
+
+"""
+a=('051589568804' in u.count.keys())
+print a
+"""
+#u.userDict
 """
 for a in useritem_dic:
     if useritem_dic[a].values().count(1) > 0:
         pass
         #print a.ljust(50, '.'), useritem_dic[a], '*******************\n'
 """
-
-for usr in u.count.keys():
-    #print usr
-    c= u.recommend(usr)
-    if len(c) !=0:
-        print c ,'**\n'
-"""
-a=('051589568804' in u.count.keys())
-print a
-"""
-#u.userDict
