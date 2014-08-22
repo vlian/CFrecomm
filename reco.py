@@ -53,15 +53,15 @@ class Recommend:
         for u in self.users:
             userRelated[u] = {}
             self.userSim[u] = {}
-            for v in self.users:
-                if u != v:
-                    userRelated[u][v] = 0
 
         for us in self.iumatrix.values():
             for u in us:
                 for v in us:
                     if u != v:
-                        userRelated[u][v] += 1
+                        try:
+                            userRelated[u][v] += 1
+                        except KeyError:
+                            userRelated[u][v] = 1
 
         for u, related in userRelated.items():
             for v, count in related.items():

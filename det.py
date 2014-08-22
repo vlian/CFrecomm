@@ -4,7 +4,7 @@ import reco
 from reco import Recommend
 
 l = []
-with open('det.dat') as f:
+with open('userdet_20140713.dat') as f:
     for line in f:
         i, u = line.split("|")[6:8]
         l.append((u, i))
