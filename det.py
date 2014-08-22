@@ -5,6 +5,7 @@ from reco import Recommend
 """
 readdata:读取数据。
 commend_result:输出结果文件。
+只计算有相同点播历史的用户
 """
 
 

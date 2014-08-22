@@ -60,11 +60,11 @@ class Recommend:
     def similarity(self):
         pass
         """
-        other methods of similarity。
+        other methods of similarity computation。
         """
 
         """
-        用户相似度计算
+        similarity computation
         """
     def setusersim(self):
         userRelated = {}
@@ -73,7 +73,7 @@ class Recommend:
             self.userSim[u] = {}
 
         """
-        两两用户间相似度矩阵，只计算有相同点播历史的用户。
+        similarity matrix。
         """
         for us in self.iumatrix.values():
             for u in us:
@@ -85,14 +85,14 @@ class Recommend:
                             userRelated[u][v] = 1
 
         """
-        相似度
+        similarity matrix
         """
         for u, related in userRelated.items():
             for v, count in related.items():
                 self.userSim[u][v] = count / math.sqrt(len(self.uimatrix[u]) * len(self.uimatrix[v]))
 
         """
-        累加各个邻居中要推荐给当前用户的节目的分值，即相似用户中共同点播多的节目/商品会推送给当前用户。
+        add scores
         """
     def recommend(self, user, k=4, nitem=4):
         rank = dict()
