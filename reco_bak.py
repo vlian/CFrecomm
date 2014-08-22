@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 '''recommend according to customers' subscription'''
@@ -6,15 +7,14 @@ __author__ = 'Yuan, Wang'
 
 import math
 
-
 class Recommend:
     def __init__(self, records=None):
-        self.records = records or []
-        self.users = set()
-        self.items = set()
+        self.records  = records or []
+        self.users    = set()
+        self.items    = set()
         self.uimatrix = dict()
         self.iumatrix = dict()
-        self.userSim = dict()
+        self.userSim  = dict()
         self.setuser()
         self.setitem()
         self.setuimatrix()
@@ -65,7 +65,7 @@ class Recommend:
 
         for u, related in userRelated.items():
             for v, count in related.items():
-                self.userSim[u][v] = count / math.sqrt(len(self.uimatrix[u]) * len(self.uimatrix[v]))
+                self.userSim[u][v] = count / math.sqrt(len(self.uimatrix[u]) * len(self.uimatrix[v])) 
 
 
     def recommend(self, user, k=4, nitem=4):
@@ -78,3 +78,12 @@ class Recommend:
                         rank[i] += sim
         return sorted(rank.items(), key=lambda x: x[1], reverse=True)[:nitem]
 
+l = []
+with open('det.dat') as f:
+    for line in f:
+        i, u = line.split("|")[6:8]
+        l.append((u, i))
+r = Recommend(l)
+#print l
+for u in r.users:
+    print u, r.recommend(u)

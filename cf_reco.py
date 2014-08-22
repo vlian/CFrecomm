@@ -6,12 +6,15 @@ import math
 
 class UserBasedCF:
     def __init__(self, userdet=None, outcfcomm=None):
+        self.count = dict()   #
         self.bestusersim = dict()
         self.userdet = userdet
         self.outcfcomm = outcfcomm
         self.userDict = {}
         self.itemDict = {}
         self.user_item_matrix = dict()
+        self.UserItemDic()
+        self.bestsim()
 
     def UserItemDic(self, userdet=None, outcfcomm=None):
         """
@@ -47,7 +50,6 @@ class UserBasedCF:
          '\n'
          '        '
         )
-        return self.user_item_matrix
 
     def similarity(self):
 
@@ -76,7 +78,6 @@ class UserBasedCF:
                 item_users.setdefault(j, set())
                 item_users[j].add(i)
         user_item_count = dict()   #
-        count = dict()   #
         for item, users in item_users.items():
             #print users:点播某一个节目的用户集。
             for u in users:
@@ -85,17 +86,16 @@ class UserBasedCF:
                 for v in users:
                     if u == v:
                         continue
-                    count.setdefault(u, {})
-                    count[u].setdefault(v, 0)
-                    count[u][v] += 1  #用户订购关系矩阵。
-        for u, related_users in count.items():
+                    self.count.setdefault(u, {})
+                    self.count[u].setdefault(v, 0)
+                    self.count[u][v] += 1  #用户订购关系矩阵。
+        for u, related_users in self.count.items():
             self.bestusersim.setdefault(u, dict())
             for v, cuv in related_users.items():
                 """
                 cuv:related_users[][]:用户相同节目的个数。
                 """
                 self.bestusersim[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)#用户相似度。
-        return self.bestusersim
 
     def recommend(self, user, usermatr=None, k=4, nitem=4):
         """
@@ -126,13 +126,21 @@ class UserBasedCF:
 
 u = UserBasedCF('userdet_20140713.dat', 'cf_comm.txt')
 #print u.ReadUserDet().keys()
-useritem_dic = u.UserItemDic()
+#useritem_dic = u.UserItemDic()
 """
 for a in useritem_dic:
     if useritem_dic[a].values().count(1) > 0:
         pass
         #print a.ljust(50, '.'), useritem_dic[a], '*******************\n'
 """
-for usr in u.bestusersim.keys():
-    print usr
+
+for usr in u.count.keys():
+    #print usr
     c= u.recommend(usr)
+    if len(c) !=0:
+        print c ,'**\n'
+"""
+a=('051589568804' in u.count.keys())
+print a
+"""
+#u.userDict
