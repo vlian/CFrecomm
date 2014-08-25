@@ -2,7 +2,7 @@
 """
 recommend according to customers' subscription
 2014-8-23
-----------------------------------------------
+//////////////////////////////////////////////
 readdata:input file.
 commend_result:output file.
 """
@@ -33,7 +33,7 @@ def recommend(writefile, tup=None):
         commend_result.write(str(u) + rs + '\n')
     commend_result.close()
 
-matr = readdata('userdet_20140713.dat')
-recommend('commend_result.txt', matr)
+matr = readdata('userdet_20140823-24.dat')
+recommend('commend_result2.txt', matr)
 
 
