@@ -16,9 +16,10 @@ def readdata(filename):
     l = []
     with open(filename, 'r') as f:
         for line in f:
-            i, u = line.split("|")[6:8]
-            if i != 'null' and i != '' and u != 'null' and u != '':
-                l.append((u, i))
+            c, u, i = line.split("|")[0:3]
+            if c == 1:    # 城市。1：南京
+                if i != 'null' and i != '' and u != 'null' and u != '':
+                    l.append((u, i))
     return l
 
 
@@ -33,7 +34,7 @@ def recommend(writefile, tup=None):
         commend_result.write(str(u) + rs + '\n')
     commend_result.close()
 
-matr = readdata('userdet_20140823-24.dat')
+matr = readdata('det_082324_nanjing.dat')
 recommend('commend_result2.txt', matr)
 
 

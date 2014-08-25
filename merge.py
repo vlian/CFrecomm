@@ -2,8 +2,8 @@ __author__ = 'yuan'
 
 import os
 
-file_list = ('userdet_20140823.dat', 'userdet_20140824.dat')
-f = open('userdet_20140823-24.dat', 'w')
+file_list = ('tmp0823.dat', 'tmp0824.dat')
+f = open('det_082324_nanjing.dat', 'w')
 os.chdir('userdet_data')
 for det_file in file_list:
     with open(det_file) as df:
