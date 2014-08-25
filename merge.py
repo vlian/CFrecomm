@@ -1,4 +1,4 @@
-__author__ = 'yuan'
+__author__ = '(Yuan Lu-Feng)yuanlufeng@xwtech.com, (Wang Xing)wangxing@xwtech.com'
 
 import os
 
