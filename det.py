@@ -17,7 +17,8 @@ def readdata(filename):
     with open(filename, 'r') as f:
         for line in f:
             c, u, i = line.split("|")[0:3]
-            if c == 1:    # 城市。1：南京
+            if int(c) == 1:    # 城市。1：南京
+                #print c,',', u, ',' , i,'\n'
                 if i != 'null' and i != '' and u != 'null' and u != '':
                     l.append((u, i))
     return l
